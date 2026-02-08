@@ -3,7 +3,7 @@ import { TokenUsage } from './logParser.js';
 
 export type DisplayUnit = 'tokens' | 'cost_usd' | 'energy_kwh' | 'trees_burned';
 
-// Per-million-token pricing by model family (verify against current rates)
+// Per-million-token pricing by model family
 interface ModelPricing {
     input: number;
     output: number;
@@ -11,7 +11,8 @@ interface ModelPricing {
     cache_read: number;
 }
 
-const MODEL_PRICING: Record<string, ModelPricing> = {
+// Default pricing (used as fallback when settings are not configured)
+const DEFAULT_MODEL_PRICING: Record<string, ModelPricing> = {
     opus: {
         input: 15.00,
         output: 75.00,
@@ -32,7 +33,20 @@ const MODEL_PRICING: Record<string, ModelPricing> = {
     },
 };
 
-const DEFAULT_PRICING = MODEL_PRICING.opus;
+/**
+ * Read per-model pricing from VSCode settings, falling back to defaults.
+ */
+function getModelPricing(family: string): ModelPricing {
+    const config = vscode.workspace.getConfiguration('claudeTokenTracker');
+    const defaults = DEFAULT_MODEL_PRICING[family] || DEFAULT_MODEL_PRICING.opus;
+
+    return {
+        input: config.get<number>(`pricing.${family}.input`, defaults.input),
+        output: config.get<number>(`pricing.${family}.output`, defaults.output),
+        cache_creation: config.get<number>(`pricing.${family}.cacheCreation`, defaults.cache_creation),
+        cache_read: config.get<number>(`pricing.${family}.cacheRead`, defaults.cache_read),
+    };
+}
 
 // Rough estimate: ~0.001 kWh per 1000 tokens (illustrative)
 const KWH_PER_TOKEN = 0.000001;
@@ -81,7 +95,7 @@ export function getModelDisplayName(modelId: string): string {
  */
 export function calculateModelCost(usage: TokenUsage, model: string): number {
     const family = getModelFamily(model);
-    const pricing = MODEL_PRICING[family] || DEFAULT_PRICING;
+    const pricing = getModelPricing(family);
     return (
         (usage.input_tokens * pricing.input) / 1_000_000 +
         (usage.output_tokens * pricing.output) / 1_000_000 +
@@ -94,7 +108,7 @@ export function calculateModelCost(usage: TokenUsage, model: string): number {
  * Calculate USD cost from token usage (uses default Opus pricing).
  */
 export function calculateCost(usage: TokenUsage): number {
-    const pricing = DEFAULT_PRICING;
+    const pricing = getModelPricing('opus');
     return (
         (usage.input_tokens * pricing.input) / 1_000_000 +
         (usage.output_tokens * pricing.output) / 1_000_000 +
