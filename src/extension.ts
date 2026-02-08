@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { createStatusBar, updateStatusBar, applyStatusBarVisibility } from './statusBar.js';
 import { createFileWatcher } from './fileWatcher.js';
-import { showDetailsPanel } from './webviewPanel.js';
+import { showDetailsPanel, refreshDetailsPanel } from './webviewPanel.js';
 import { createSidebarView, refreshSidebarView } from './sidebarView.js';
 
 function applySidebarVisibility(): void {
@@ -37,6 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('claudeTokenTracker.refreshUsage', () => {
 			updateStatusBar();
 			refreshSidebarView();
+			refreshDetailsPanel();
 			vscode.window.showInformationMessage('Claude Token Tracker: Usage refreshed');
 		})
 	);
@@ -61,6 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
 				applySidebarVisibility();
 				updateStatusBar();
 				refreshSidebarView();
+				refreshDetailsPanel();
 			}
 		})
 	);

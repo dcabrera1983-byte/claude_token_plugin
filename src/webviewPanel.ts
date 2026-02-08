@@ -5,6 +5,15 @@ import { getDisplayUnit, calculateModelCost, getUnitLabel, getModelDisplayName }
 let currentPanel: vscode.WebviewPanel | undefined;
 
 /**
+ * Refresh the webview panel content if it is currently open.
+ */
+export function refreshDetailsPanel(): void {
+    if (currentPanel) {
+        currentPanel.webview.html = getWebviewContent();
+    }
+}
+
+/**
  * Show or focus the usage details webview panel.
  */
 export function showDetailsPanel(): void {

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { getProjectsDir } from './logParser.js';
 import { updateStatusBar } from './statusBar.js';
 import { refreshSidebarView } from './sidebarView.js';
+import { refreshDetailsPanel } from './webviewPanel.js';
 
 /**
  * Create a file system watcher on all .jsonl files under the Claude projects directory.
@@ -19,11 +20,13 @@ export function createFileWatcher(): vscode.Disposable | null {
     watcher.onDidChange(() => {
         updateStatusBar();
         refreshSidebarView();
+        refreshDetailsPanel();
     });
 
     watcher.onDidCreate(() => {
         updateStatusBar();
         refreshSidebarView();
+        refreshDetailsPanel();
     });
 
     return watcher;
