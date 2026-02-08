@@ -1,0 +1,101 @@
+{
+  "name": "claude-token-tracker",
+  "displayName": "Claude Token Tracker",
+  "description": "Track and display Claude Code token usage from local session logs",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeTokenTracker.refreshUsage",
+        "title": "Claude Tokens: Refresh Usage"
+      },
+      {
+        "command": "claudeTokenTracker.showDetails",
+        "title": "Claude Tokens: Show Details"
+      },
+      {
+        "command": "claudeTokenTracker.openSettings",
+        "title": "Claude Tokens: Open Settings"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Token Tracker",
+      "properties": {
+        "claudeTokenTracker.displayUnit": {
+          "type": "string",
+          "default": "tokens",
+          "enum": [
+            "tokens",
+            "cost_usd",
+            "energy_kwh",
+            "trees_burned"
+          ],
+          "enumDescriptions": [
+            "Raw token count",
+            "Estimated USD cost (per-model pricing)",
+            "Estimated energy consumption in kWh",
+            "Fun metric: equivalent trees burned"
+          ],
+          "description": "Unit used to display token usage across all UI surfaces"
+        },
+        "claudeTokenTracker.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show token usage in the status bar"
+        },
+        "claudeTokenTracker.showSidebar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show token usage in the sidebar panel"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claudeTokenTracker",
+          "title": "Claude Tokens",
+          "icon": "resources/claude-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "claudeTokenTracker": [
+        {
+          "id": "claudeTokenTracker.usageView",
+          "name": "Token Usage",
+          "type": "webview",
+          "when": "claudeTokenTracker.showSidebar"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.54.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
