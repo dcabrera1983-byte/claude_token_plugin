@@ -80,6 +80,16 @@ class SidebarWebviewProvider implements vscode.WebviewViewProvider {
             }
         }
 
+        // Fallback: if no workspace match, aggregate all projects
+        if (modelTotals.length === 0 && projects.length > 0) {
+            projectName = 'All Projects';
+            const allModelEntries: ModelDailyUsage[] = [];
+            for (const p of projects) {
+                allModelEntries.push(...p.modelDailyUsage);
+            }
+            modelTotals = aggregateByModel(allModelEntries);
+        }
+
         // Build grand total across all models
         const grandTotal: ModelTotal = {
             model: 'total',
