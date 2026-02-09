@@ -43,6 +43,26 @@ npm run pretest      # Compile + lint
 npm run test         # Run extension tests
 ```
 
+### Packaging as VSIX
+
+To create a `.vsix` file for installing the extension locally or sharing it:
+
+```bash
+# Install vsce (Visual Studio Code Extensions CLI) if you don't have it
+npm install -g @vscode/vsce
+
+# Package the extension into a .vsix file
+vsce package
+```
+
+This produces a file like `claude-token-tracker-0.0.2.vsix`. To install it in VSCode:
+
+```bash
+code --install-extension claude-token-tracker-0.0.2.vsix
+```
+
+Or in VSCode: **Extensions** view > `...` menu > **Install from VSIX...**
+
 ## Extension Commands
 
 Open the command palette (`Ctrl+Shift+P`) and search for:
