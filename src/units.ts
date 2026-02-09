@@ -14,22 +14,22 @@ interface ModelPricing {
 // Default pricing (used as fallback when settings are not configured)
 const DEFAULT_MODEL_PRICING: Record<string, ModelPricing> = {
     opus: {
-        input: 15.00,
-        output: 75.00,
-        cache_creation: 18.75,
-        cache_read: 1.50,
+        input: 5.00,
+        output: 25.00,
+        cache_creation: 10.00,
+        cache_read: 0.50,
     },
     sonnet: {
         input: 3.00,
         output: 15.00,
-        cache_creation: 3.75,
+        cache_creation: 6.00,
         cache_read: 0.30,
     },
     haiku: {
-        input: 0.80,
-        output: 4.00,
-        cache_creation: 1.00,
-        cache_read: 0.08,
+        input: 1.00,
+        output: 5.00,
+        cache_creation: 2.00,
+        cache_read: 0.10,
     },
 };
 
