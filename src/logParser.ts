@@ -57,11 +57,11 @@ export function getProjectsDir(): string | null {
 
 /**
  * Convert a workspace folder path to the Claude project directory name format.
- * Claude encodes paths by replacing ':' and path separators with '-'.
- * e.g. 'C:\Users\dcabr\Repos\my-project' -> 'C--Users-dcabr-Repos-my-project'
+ * Claude encodes paths by replacing ':', path separators, underscores, and dots with '-'.
+ * e.g. 'C:\Users\dcabr\Repos\my_project' -> 'C--Users-dcabr-Repos-my-project'
  */
 export function workspacePathToProjectDir(workspacePath: string): string {
-    return workspacePath.replace(/:/g, '-').replace(/[\\/]/g, '-');
+    return workspacePath.replace(/[:\\/_.]/g, '-');
 }
 
 /**

@@ -2,7 +2,7 @@
   "name": "claude-token-tracker",
   "displayName": "Claude Token Tracker",
   "description": "Track and display Claude Code token usage from local session logs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.109.0"
   },
@@ -60,22 +60,22 @@
         },
         "claudeTokenTracker.pricing.opus.input": {
           "type": "number",
-          "default": 15.00,
+          "default": 5.00,
           "description": "Opus input token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.opus.output": {
           "type": "number",
-          "default": 75.00,
+          "default": 25.00,
           "description": "Opus output token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.opus.cacheCreation": {
           "type": "number",
-          "default": 18.75,
-          "description": "Opus cache creation token price per million tokens (USD)"
+          "default": 10.00,
+          "description": "Opus cache creation (1h) token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.opus.cacheRead": {
           "type": "number",
-          "default": 1.50,
+          "default": 0.50,
           "description": "Opus cache read token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.sonnet.input": {
@@ -90,8 +90,8 @@
         },
         "claudeTokenTracker.pricing.sonnet.cacheCreation": {
           "type": "number",
-          "default": 3.75,
-          "description": "Sonnet cache creation token price per million tokens (USD)"
+          "default": 6.00,
+          "description": "Sonnet cache creation (1h) token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.sonnet.cacheRead": {
           "type": "number",
@@ -100,22 +100,22 @@
         },
         "claudeTokenTracker.pricing.haiku.input": {
           "type": "number",
-          "default": 0.80,
+          "default": 1.00,
           "description": "Haiku input token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.haiku.output": {
           "type": "number",
-          "default": 4.00,
+          "default": 5.00,
           "description": "Haiku output token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.haiku.cacheCreation": {
           "type": "number",
-          "default": 1.00,
-          "description": "Haiku cache creation token price per million tokens (USD)"
+          "default": 2.00,
+          "description": "Haiku cache creation (1h) token price per million tokens (USD)"
         },
         "claudeTokenTracker.pricing.haiku.cacheRead": {
           "type": "number",
-          "default": 0.08,
+          "default": 0.10,
           "description": "Haiku cache read token price per million tokens (USD)"
         }
       }

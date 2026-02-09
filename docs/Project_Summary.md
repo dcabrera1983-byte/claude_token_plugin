@@ -91,12 +91,24 @@ The extension provides a configuration screen where users choose how token usage
 
 Additional fun or educational units can be added over time. Each unit is a conversion function from raw token counts.
 
-## Display Options
+## Display Components
 
-- **Status Bar:** Show "Today: 2.5k in / 1.2k out ($0.45)" via `createStatusBarItem()`. Click for details.
-- **Webview Panel:** 7-day breakdown table with input/output/cache columns.
-- **Configuration Panel:** Settings UI for selecting display unit.
-- **Commands:** "Refresh Usage" via `commands.registerCommand()`.
+- **Status Bar:** Shows today's usage (e.g. `$(pulse) Claude: 2.5k in / 1.2k out`). Tooltip includes full token breakdown and estimated cost. Click opens the details panel. Workspace-aware: shows current project's usage when a workspace is open.
+- **Sidebar Panel:** Activity bar webview with per-model token cards for the current workspace project. Each card shows input/output/cache tokens, cost, energy, and trees burned. Includes "View Full Report" and "Settings" links.
+- **Webview Details Panel:** Full breakdown table of all projects, grouped by date and model. Columns: Date, Model, Input, Output, Cache Create, Cache Read, Requests, Est. Cost. Per-project subtotals and a grand total across all projects.
+- **Commands:** Three registered commands:
+  - `claudeTokenTracker.refreshUsage` — Manually refresh all displays
+  - `claudeTokenTracker.showDetails` — Open the details webview panel
+  - `claudeTokenTracker.openSettings` — Open extension settings in VSCode
+
+## Settings
+
+The extension provides 17 configuration properties under `claudeTokenTracker.*`:
+
+- `displayUnit` — Select display unit (tokens, cost_usd, energy_kwh, trees_burned). Default: `tokens`.
+- `showStatusBar` — Show/hide the status bar item. Default: `true`.
+- `showSidebar` — Show/hide the sidebar panel. Default: `true`.
+- `pricing.{opus|sonnet|haiku}.{input|output|cacheCreation|cacheRead}` — Per-model pricing in USD per million tokens. Configurable for each model family and token type.
 
 ## Best Practices
 
