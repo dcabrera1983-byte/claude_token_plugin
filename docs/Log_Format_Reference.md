@@ -229,16 +229,16 @@ The model name is at `message.model`. Observed values:
 
 ### Cost Calculation
 
-No `costUSD` field is present on individual session entries. Costs must be calculated from token counts. Current Anthropic API pricing (verify against current rates):
+No `costUSD` field is present on individual session entries. Costs must be calculated from token counts. The extension uses configurable per-model pricing (via VSCode settings) with these defaults:
 
-| Token Type                | Cost per Million Tokens |
-|---------------------------|------------------------|
-| Input tokens              | $15.00                 |
-| Output tokens             | $75.00                 |
-| Cache creation tokens     | $18.75                 |
-| Cache read tokens         | $1.50                  |
+| Token Type                | Opus ($/M) | Sonnet ($/M) | Haiku ($/M) |
+|---------------------------|-----------|-------------|------------|
+| Input tokens              | $15.00    | $3.00       | $0.80      |
+| Output tokens             | $75.00    | $15.00      | $4.00      |
+| Cache creation tokens     | $18.75    | $3.75       | $1.00      |
+| Cache read tokens         | $1.50     | $0.30       | $0.08      |
 
-> **Note:** These prices are for Opus-class models. Sonnet/Haiku models have different (lower) pricing. The extension should maintain a pricing table per model family.
+> **Note:** Pricing is configurable per model family under `claudeTokenTracker.pricing.*` in VSCode settings. Verify defaults against current Anthropic API rates.
 
 ---
 

@@ -19,14 +19,15 @@ The extension reads Claude Code's session transcript logs from `~/.claude/projec
 - **Deduplication:** Streaming produces multiple entries per request (same `requestId`). Use the last entry per `requestId`.
 - **Alternative data source:** `~/.claude/stats-cache.json` has pre-aggregated totals (may lag real-time)
 
-### Core Components (Planned)
+### Core Components
 
-1. **File watcher** — `vscode.workspace.createFileSystemWatcher` on `**/*.jsonl` under `~/.claude/projects/` for live updates
-2. **Log parser** — Reads JSONL, filters to `type === "assistant"`, deduplicates by `requestId`, extracts `message.usage`
-3. **Status bar item** — Shows summary like "Today: 2.5k in / 1.2k out ($0.45)", click for details
-4. **Webview panel** — 7-day breakdown table with input/output/cache columns
-5. **Configuration panel** — Settings UI to choose display unit (see Display Units below)
-6. **Commands** — e.g. "Refresh Usage" via `commands.registerCommand()`
+1. **File watcher** (`fileWatcher.ts`) — `vscode.workspace.createFileSystemWatcher` on `**/*.jsonl` under `~/.claude/projects/` for live updates. Triggers refresh of all UI components on file change/create.
+2. **Log parser** (`logParser.ts`) — Reads JSONL, filters to `type === "assistant"`, deduplicates by `requestId` (keeps last entry), extracts `message.usage`. Aggregates by date and by date+model. Supports per-project and all-project queries.
+3. **Status bar item** (`statusBar.ts`) — Shows today's summary (e.g. `$(pulse) Claude: 2.5k in / 1.2k out`). Tooltip shows full token breakdown and estimated cost. Click opens the details panel. Workspace-aware: shows current project usage when a workspace is open.
+4. **Sidebar panel** (`sidebarView.ts`) — Activity bar webview showing model-by-model token cards for the current workspace project. Displays tokens, cost, energy, and trees burned per model. Includes links to "View Full Report" and "Settings".
+5. **Webview details panel** (`webviewPanel.ts`) — Full breakdown table of all projects grouped by date and model. Columns: Date, Model, Input, Output, Cache Create, Cache Read, Requests, Est. Cost. Shows per-project subtotals and grand total.
+6. **Unit conversions** (`units.ts`) — Converts token counts to selected display unit. Supports per-model pricing from VSCode settings with hardcoded defaults.
+7. **Commands** — Three registered commands: Refresh Usage, Show Details, Open Settings.
 
 ### Display Units
 
@@ -41,9 +42,16 @@ The extension supports configurable display units via VSCode settings. The user 
 
 Additional fun/educational units can be added over time. Each unit is a simple conversion function from token counts.
 
+### Settings
+
+The extension exposes 17 configuration properties under `claudeTokenTracker.*`:
+
+- **Display:** `displayUnit` (tokens | cost_usd | energy_kwh | trees_burned), `showStatusBar`, `showSidebar`
+- **Per-model pricing** (per million tokens): `pricing.{opus|sonnet|haiku}.{input|output|cacheCreation|cacheRead}`
+
 ### Data Aggregation
 
-Group entries by `timestamp.slice(0, 10)` for daily summaries. Aggregate by project directory for per-project views.
+Group entries by `timestamp.slice(0, 10)` for daily summaries. Also aggregate by date + model for per-model breakdowns. Aggregate by project directory for per-project views.
 
 ## Build & Development
 
